@@ -26,4 +26,9 @@ jobs:
 
     - name: Analysing the code with pylint
       run: |
-        poetry run pylint $(git ls-files '*.py')
+        FILES=$(git ls-files '*.py')
+        if [ -n "$FILES" ]; then
+          poetry run pylint $FILES
+        else
+          echo "No Python files to lint."
+        fi
