@@ -1,0 +1,19 @@
+{
+    "name": "My Workspace",
+    "build": {
+      "dockerfile": "Dockerfile",
+      // Optionally specify the path to your Dockerfile if you're using a custom container
+    },
+    "settings": {
+      // VS Code settings to apply
+      "terminal.integrated.shell.linux": "/bin/bash"
+    },
+    "extensions": [
+      // List any VS Code extensions that should be automatically installed
+      "ms-python.python",
+      "ms-vscode.cpptools"
+    ],
+    "postCreateCommand": "chmod +x setup.sh && ./setup.sh",
+    "remoteUser": "vscode"
+  }
+  
