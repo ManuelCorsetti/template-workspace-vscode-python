@@ -1,20 +1,20 @@
-# Use an official base image that is compatible with GitHub Codespaces
+# Use an official base image from Microsoft that is compatible with GitHub Codespaces
 FROM mcr.microsoft.com/vscode/devcontainers/base:ubuntu
 
-# Install Python 3.12 and related packages
-RUN sudo apt-get update && \
-    sudo apt-get install -y software-properties-common && \
-    sudo add-apt-repository ppa:deadsnakes/ppa && \
-    sudo apt-get update && \
-    sudo apt-get install -y python3.12 python3.12-venv python3.12-dev
+# Install system dependencies for Python and C++ development
+RUN sudo apt-get update && sudo apt-get install -y \
+    build-essential \
+    python3-pip \
+    python3-distutils
 
-# Update the alternatives to set Python 3.12 as the default for python and python3
-RUN sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.12 1 && \
-    sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1
+# Copy local code to the container (make sure to have a setup.sh script in your context)
+COPY --chown=vscode:vscode . .
 
-# Install pip for Python 3.12
-RUN sudo apt-get install -y python3-pip && \
-    sudo python3 -m pip install --upgrade pip
+# Run a shell command to set executable permissions and execute the script
+RUN sudo chmod +x setup.sh && ./setup.sh
 
-# Set pip to use Python 3.12 as default
-RUN sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+# Set the working directory in the container
+WORKDIR /home/vscode
+
+# Set the default command for the container
+CMD ["/bin/bash"]
